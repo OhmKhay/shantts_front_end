@@ -20,7 +20,7 @@ export default function Home() {
     try {
       setLoading(true)
       setLoadError(false)
-      const response = await fetch(`https://shantts-back-end.onrender.com/api/${message}`)
+      const response = await fetch(`${API_ENDPOINT}/${message}`)
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudioUrl(audioUrl);
