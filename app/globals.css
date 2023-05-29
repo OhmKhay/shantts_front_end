@@ -7,6 +7,15 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
+@font-face {
+  font-family: "GHK Yangon";
+  src: url("https://saosu-mp.github.io/font/GreatHorKhamYangon/GreatHorKhamYangon.woff")
+      format("woff"),
+    url("https://saosu-mp.github.io/font/GreatHorKhamYangon/GreatHorKhamYangon.woff2")
+      format("woff2"),
+    url("https://saosu-mp.github.io/font/GreatHorKhamYangon/GreatHorKhamYangon.ttf")
+      format("ttf");
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -16,7 +25,12 @@
   }
 }
 
+label,
+textarea {
+  font-family: "GHK Yangon";
+}
 body {
+  font-family: "GHK Yangon";
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
