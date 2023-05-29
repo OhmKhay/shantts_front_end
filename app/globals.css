@@ -17,18 +17,36 @@
       format("ttf");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html,
+body {
+  background: #fff;
+}
+
+[data-theme="dark"] body {
+  color: #fff;
+  background: #000;
+}
+[data-theme="dark"] span {
+  color: #fff;
+}
+[data-theme="dark"] textarea {
+  color: #fff;
+}
+
+[data-theme="dark"] label {
+  color: #fff;
+}
+
+[data-theme="dark"] a {
+  color: #fefefe;
 }
 
 label,
 textarea,
+span,
 p {
   font-family: "GHK Yangon";
+  color: inherit;
 }
 body {
   font-family: "GHK Yangon";
