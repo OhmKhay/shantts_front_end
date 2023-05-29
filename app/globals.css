@@ -26,7 +26,8 @@
 }
 
 label,
-textarea {
+textarea,
+p {
   font-family: "GHK Yangon";
 }
 body {
