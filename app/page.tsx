@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import GoogleSpreadsheet from "google-spreadsheet";
 import * as Yup from "yup";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +12,9 @@ import AnimatedText from "@/components/AnimatedText";
 import ReportMe from "@/components/ReportMe";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { sheetToJson } from "@/helper/sheetToJson";
+import { __checkData } from "@/helper/checkData";
+import axios from "axios";
 
 const formSchema = Yup.object({
   message: Yup.string()
@@ -25,11 +29,18 @@ export default function Home() {
   const [value, setValue] = useState("");
   const [isShan, setIsShan] = useState(false);
 
+  // AKfycbzGqCloKQJsg8mvZMf6e-gC76nYws5BwD9FErAVi4EjceVIJMvFNWNCyMOYh1AICP1i
+  // https://script.google.com/macros/s/AKfycbzGqCloKQJsg8mvZMf6e-gC76nYws5BwD9FErAVi4EjceVIJMvFNWNCyMOYh1AICP1i/exec
+
   useEffect(() => {
     setTimeout(() => {
       // @ts-ignore
       let lang: any = new Som();
-      if (lang.detect(String(value))?._label === "shan") {
+
+      if (
+        lang.detect(String(value))?._label === "shan" ||
+        value === "မႂ်ႇသုင်"
+      ) {
         setIsShan(true);
       } else {
         setIsShan(false);
@@ -38,18 +49,40 @@ export default function Home() {
   }, [value]);
 
   const handleGenerate = async (message: string) => {
-    const __message = replaceWords(message);
+    const __message: any = replaceWords(message);
+
+    // const isExist = await __checkData(__message);
+    const body: any = {
+      msg: __message,
+      audio: "audio 1",
+      fileName: "test",
+    };
+    try {
+      const __data = await fetch(
+        "https://script.google.com/macros/s/AKfycbyFwXLa9-_7llGDzSOeXl-968lOgR4CKea2M9OlkEkFHx3z-m7N-BYmR-cqNqCbP1jp/exec",
+        {
+          redirect: "follow",
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+        }
+      );
+
+      console.log("herei s ___data:", __data);
+    } catch (error) {}
 
     try {
       setLoading(true);
       setLoadError(false);
-      const response = await fetch(
+      const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${__message}`
       );
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudioUrl(audioUrl);
-    } catch (error) {
+      console.log("her eis ___test", data);
+      setAudioUrl(data?.audio);
+    } catch ({ response }: any) {
+      // console.log("Status Code::", response?.status === 429);
       setLoadError(true);
       setLoading(false);
     }
@@ -172,10 +205,13 @@ export default function Home() {
                   <div className="block my-5">
                     {audioUrl && !loading && (
                       <audio controls>
-                        <source src={audioUrl} type="audio/wav" />
+                        <source
+                          src={`data:audio/wav;base64,${audioUrl}`}
+                          type="audio/wav"
+                        />
                       </audio>
                     )}
-                    {!isShan && value?.length > 3 && (
+                    {!isShan && (
                       <AnimatedText
                         text="တႅမ်ႈလူင်းပၼ် လိၵ်ႈတႆး သေၵမ်းၶႃႈ ...."
                         className="text-red-500 text-[14px]"
