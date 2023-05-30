@@ -135,6 +135,24 @@ const NavBar = () => {
         </nav>
       </div>
 
+      <div className="invisible lg:visible absolute top-[30px] left-[60%]">
+        <button
+          onClick={() => {
+            setMode(mode === "light" ? "dark" : "light");
+            setTheme(mode === "light" ? "dark" : "light");
+          }}
+          className={`ml-3 flex items-center justify-center rounded-full p-1 ease
+      ${mode === "light" ? "bg-dark text-light" : "bg-light text-dark"}
+      `}
+        >
+          {mode === "light" ? (
+            <SunIcon className={"fill-dark"} />
+          ) : (
+            <MoonIcon className={"fill-dark"} />
+          )}
+        </button>
+      </div>
+
       <div className="absolute left-[10%] top-2 sm:left-[20%] translate-x-[-50%]">
         <Logo />
       </div>

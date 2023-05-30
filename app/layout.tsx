@@ -34,11 +34,16 @@ export default function RootLayout({
       <meta
         property="og:image"
         content={
-          " https://haohaa.sgp1.digitaloceanspaces.com/post_images/tts-shan-bg-png-ukb80-20230530"
+          "https://haohaa.sgp1.digitaloceanspaces.com/post_images/shn-tts-bg-png-efz8e-20230530"
         }
       />
       <meta property="og:image:alt" content={"Shan Text to Speech"} />
       <meta property="og:description" content={"Shan Text To Speech"} />
+
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
       <body
         className={`${inter.className} font-mont bg-light dark:bg-dark w-full min-h-screen`}
         suppressHydrationWarning={true}
