@@ -2,7 +2,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import Providers from "./Providers";
-import GoogleAnalytics from "@/components/GoogleTag";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +17,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GoogleAnalytics GA_MEASUREMENT_ID="G-FYM6M20E0E" />
-
       {/* https://haohaa.sgp1.digitaloceanspaces.com/post_images/tts-shan-bg-png-ukb80-20230530 */}
       <Script src="https://cdn.jsdelivr.net/gh/haohaaorg/shanormyanmar@master/dist/som.min.js" />
       <link rel="icon" href="/favicon.ico" sizes="any" />
