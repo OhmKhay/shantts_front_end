@@ -16,7 +16,7 @@ import axios from "axios";
 
 const formSchema = Yup.object({
   message: Yup.string()
-    .required("တႅမ်ႈပၼ်လိၵ်ႈတႆးသေ ယႃႇႁႂ်ႈပူၼ်ႉ 800 တူဝ်ၶႃႈ ...")
+    .required("တႅမ်ႈပၼ်လိၵ်ႈတႆးသေ ယႃႇႁႂ်ႈပူၼ်ႉ 800တူဝ် ၶႃႈ ...")
     .max(800),
 });
 
