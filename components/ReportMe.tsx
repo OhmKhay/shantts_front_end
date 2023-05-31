@@ -5,7 +5,7 @@ import { CircularText } from "./Icons";
 const ReportMe = () => {
   return (
     <div className="fixed flex items-center justify-center overflow-hidden left-4 bottom-4 md:right-8 md:left-auto md:top-0 md:bottom-auto md:absolute sm:right-0 ">
-      <div className="relative z-20 flex items-center justify-center w-48 h-auto md:w-24">
+      <div className="relative z-20 flex items-center justify-center w-[10rem] h-auto md:w-24">
         <CircularText
           className={"fill-dark animate-spin-slow dark:fill-light"}
         />

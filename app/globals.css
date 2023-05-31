@@ -40,6 +40,9 @@ body {
 [data-theme="dark"] a {
   color: #fefefe;
 }
+[data-theme="dark"] p {
+  color: #fefefe;
+}
 
 label,
 textarea,

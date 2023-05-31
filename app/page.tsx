@@ -30,6 +30,7 @@ export default function Home() {
   });
   const [value, setValue] = useState("");
   const [isShan, setIsShan] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       // @ts-ignore
@@ -127,7 +128,7 @@ export default function Home() {
         <Layout className="pt-0 md:pt-16 sm:pt-16">
           <div className="flex justify-center w-full dark:text-light">
             <div className="dark:bg-black dark:text-white">
-              <div className="flex flex-col items-center justify-between w-full sm:bg-red sm:p-2">
+              <div className="flex flex-col items-center justify-between w-full">
                 <div className="z-10 items-center justify-between w-full font-mono text-sm dark:text-white sm:w-5xl lg:flex">
                   <AnimatedText
                     text="A Shan Text to Speech quick playground"
@@ -175,7 +176,7 @@ export default function Home() {
                               className="block p-2.5 text-sm w-full text-gray-900  rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               placeholder="မႂ်ႇသုင်ၶႃႈ ..."
                             ></textarea>
-                            <p className="mt-2">
+                            <p className="mt-5 dark:text-white">
                               {values?.message?.length || 0} / 800
                             </p>
                           </div>
@@ -197,7 +198,7 @@ export default function Home() {
                                   : true
                               }
                               onClick={() => handleGenerate(values?.message)}
-                              className="disabled:bg-gray-600 my-5 disabled:hover:bg-gray-600 disabled:cursor-not-allowed text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                              className="disabled:bg-gray-600  disabled:hover:bg-gray-600 disabled:cursor-not-allowed text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             >
                               Generate
                             </button>
