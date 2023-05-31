@@ -1,9 +1,8 @@
 "use client";
-
+import { useEffect } from "react";
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { pageview } from "../lib/gtagHelper";
+import { pageview } from "@/lib/gtagHelper";
 export default function GoogleAnalytics({
   GA_MEASUREMENT_ID,
 }: {
@@ -14,6 +13,7 @@ export default function GoogleAnalytics({
 
   useEffect(() => {
     const url = pathname + searchParams.toString();
+
     pageview(GA_MEASUREMENT_ID, url);
   }, [pathname, searchParams, GA_MEASUREMENT_ID]);
 
@@ -28,18 +28,18 @@ export default function GoogleAnalytics({
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-                gtag('consent', 'default', {
-                    'analytics_storage': 'denied'
-                });
-                
-                gtag('config', '${GA_MEASUREMENT_ID}', {
-                    page_path: window.location.pathname,
-                });
-                `,
+              gtag('consent', 'default', {
+                  'analytics_storage': 'denied'
+              });
+              
+              gtag('config', '${GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+              });
+              `,
         }}
       />
     </>
