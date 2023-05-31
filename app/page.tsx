@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import GoogleSpreadsheet from "google-spreadsheet";
 import * as Yup from "yup";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +11,6 @@ import AnimatedText from "@/components/AnimatedText";
 import ReportMe from "@/components/ReportMe";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { sheetToJson } from "@/helper/sheetToJson";
 import { __checkData } from "@/helper/checkData";
 import axios from "axios";
 
@@ -24,14 +22,14 @@ const formSchema = Yup.object({
 
 export default function Home() {
   const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
+  const [wavUrl, setWavUrl] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [loadError, setLoadError] = React.useState(false);
+  const [loadError, setLoadError]: any = React.useState({
+    status: false,
+    msg: null,
+  });
   const [value, setValue] = useState("");
   const [isShan, setIsShan] = useState(false);
-
-  // AKfycbzGqCloKQJsg8mvZMf6e-gC76nYws5BwD9FErAVi4EjceVIJMvFNWNCyMOYh1AICP1i
-  // https://script.google.com/macros/s/AKfycbzGqCloKQJsg8mvZMf6e-gC76nYws5BwD9FErAVi4EjceVIJMvFNWNCyMOYh1AICP1i/exec
-
   useEffect(() => {
     setTimeout(() => {
       // @ts-ignore
@@ -48,43 +46,75 @@ export default function Home() {
     }, 2000);
   }, [value]);
 
+  const handleAddToSheet = ({
+    msg,
+    fileName,
+  }: {
+    msg: string;
+    fileName: string;
+  }) => {
+    let formData = new FormData();
+    formData.append("msg", msg);
+    formData.append("fileName", fileName);
+    fetch(
+      "https://script.google.com/macros/s/AKfycbwSfZfCYXAo2JHMRMOQEj3o-6voNWHTn8fBTkyRHErcr6HqhzkZbY9YQ7swTPP7TvnI/exec",
+      {
+        method: "POST",
+        body: formData,
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("response::", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleGenerate = async (message: string) => {
+    setLoading(true);
     const __message: any = replaceWords(message);
 
-    // const isExist = await __checkData(__message);
-    const body: any = {
-      msg: __message,
-      audio: "audio 1",
-      fileName: "test",
-    };
-    try {
-      const __data = await fetch(
-        "https://script.google.com/macros/s/AKfycbyFwXLa9-_7llGDzSOeXl-968lOgR4CKea2M9OlkEkFHx3z-m7N-BYmR-cqNqCbP1jp/exec",
-        {
-          redirect: "follow",
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+    const __checkResponse: any = await __checkData(__message);
+
+    if (__checkResponse?.audio) {
+      setWavUrl(
+        `https://shntts-api.haohaa.com/files/${__checkResponse?.audio}`
+      );
+    } else {
+      try {
+        setLoading(true);
+        setLoadError({
+          status: false,
+          msg: null,
+        });
+        const { data }: any = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${__message}`
+        );
+
+        setAudioUrl(data?.audio);
+        if (data?.audio) {
+          handleAddToSheet({
+            msg: value,
+            fileName: data?.name,
+          });
         }
-      );
+      } catch (err: any) {
+        if (err?.response?.status === 429) {
+          setLoadError({
+            status: true,
+            msg: "Too Many Requests Error. Please try again after 5 minutes",
+          });
+        } else {
+          setLoadError({
+            status: true,
+            msg: "Something wrong, please try again.",
+          });
+        }
 
-      console.log("herei s ___data:", __data);
-    } catch (error) {}
-
-    try {
-      setLoading(true);
-      setLoadError(false);
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${__message}`
-      );
-      console.log("her eis ___test", data);
-      setAudioUrl(data?.audio);
-    } catch ({ response }: any) {
-      // console.log("Status Code::", response?.status === 429);
-      setLoadError(true);
-      setLoading(false);
+        setLoading(false);
+      }
     }
     setLoading(false);
   };
@@ -211,16 +241,21 @@ export default function Home() {
                         />
                       </audio>
                     )}
-                    {!isShan && (
+                    {wavUrl && !audioUrl && (
+                      <audio controls>
+                        <source src={`${wavUrl}`} type="audio/wav" />
+                      </audio>
+                    )}
+                    {!isShan && value?.length > 1 && (
                       <AnimatedText
                         text="တႅမ်ႈလူင်းပၼ် လိၵ်ႈတႆး သေၵမ်းၶႃႈ ...."
                         className="text-red-500 text-[14px]"
                       />
                     )}
 
-                    {!loading && loadError && (
+                    {!loading && loadError?.status && (
                       <AnimatedText
-                        text=" Something wrong, please try again."
+                        text={loadError?.message}
                         className="text-red-500 text-[14px]"
                       />
                     )}
