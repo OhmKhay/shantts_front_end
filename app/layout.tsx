@@ -2,10 +2,8 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import Providers from "./Providers";
-import * as gtag from "../lib/gtag.js";
-import Head from "next/head";
-// import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
+import GoogleAnalytics from "@/components/GoogleTag";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -18,38 +16,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const router: any = useRouter();
-  // useEffect(() => {
-  //   const handleRouteChange = (url: any) => {
-  //     gtag.pageview(url);
-  //   };
-  //   router.events.on("routeChangeComplete", handleRouteChange);
-  //   return () => {
-  //     router.events.off("routeChangeComplete", handleRouteChange);
-  //   };
-  // }, [router.events]);
   return (
     <html lang="en">
-      <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
+      <GoogleAnalytics GA_MEASUREMENT_ID="G-FYM6M20E0E" />
 
-              gtag('config', '${gtag.GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
-      </Head>
-      {/* Global Site Tag (gtag.js) - Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-      />
       {/* https://haohaa.sgp1.digitaloceanspaces.com/post_images/tts-shan-bg-png-ukb80-20230530 */}
       <Script src="https://cdn.jsdelivr.net/gh/haohaaorg/shanormyanmar@master/dist/som.min.js" />
       <link rel="icon" href="/favicon.ico" sizes="any" />
